@@ -1,39 +1,39 @@
-# TODO — keyinroq ulanadigan va tekshiriladigan ishlar
+# TODO — things to connect and check later
 
-UI toʻliq tugagach shu roʻyxat boʻyicha bir chetdan oʻtamiz. Koddagi joylar `TODO(...)` izohi bilan belgilangan
-(`grep -rn "TODO(" src` bilan topiladi).
+When the UI is finished, we go through this list one item at a time. The places in the code are marked with `TODO(...)` comments
+(find them with `grep -rn "TODO(" src`).
 
-## Ulanmagan qismlar
+## Not connected yet
 
-- [ ] **Buyurtmalar qayerga borishi** — `TODO(order-delivery)`
-      «Buyurtma berish» oynasi (`src/components/site/order-dialog.tsx`) va server amali (`src/app/actions/lead.ts`).
-      Hozir: buyurtma admin paneldagi **Soʻrovlar** boʻlimiga darhol, sahifani yangilamasdan tushadi (🛒 Buyurtma belgisi,
-      bildirishnoma va son bilan); Sozlamalarda bot ulansa, Telegram-botga ham ketadi. Hal qilish kerak: bot shaxsiy chatga, kanalga yoki guruhga yozsinmi,
-      bir nechta menejerga taqsimlansinmi.
-- [ ] **Bosh sahifa statistikasi** — `TODO(stats)` (`src/lib/i18n/uz.ts`, `ru.ts`)
-      «24/7», «15 min», «1 yil+», «100%» — namunaviy raqamlar, qoʻlda yozilgan. Admin panel → Sozlamalarga koʻchirish.
-- [ ] **Ish vaqti kunlari** — `TODO(work-hours)` (`src/components/site/open-status.tsx`)
-      «Hozir ochiq / yopiq» belgisi faqat «10:00 – 21:00» kabi soatni oʻqiydi, hafta kunlarini hisobga olmaydi.
-- [ ] **Yetkazib berish** — `TODO(delivery)`
-      «Qanday buyurtma beriladi» 3-qadami doʻkondan olib ketishni nazarda tutadi. Yetkazib berish boʻlsa, matnni oʻzgartirish.
+- [ ] **Where orders go** — `TODO(order-delivery)`
+      The order dialog (`src/components/site/order-dialog.tsx`) and its server action (`src/app/actions/lead.ts`).
+      Now: an order appears in the admin **Soʻrovlar** (Requests) section right away, without reloading the page (with the 🛒 order badge,
+      a notification and a counter); if a bot is connected in Settings, it is also sent to the Telegram bot. To decide: should the bot post to a private chat, a channel or a group,
+      and should orders be split between several managers?
+- [ ] **Home page stats** — `TODO(stats)` (`src/lib/i18n/uz.ts`, `ru.ts`)
+      "24/7", "15 min", "1 yil+", "100%" are sample figures written in the code. Move them to Admin → Settings.
+- [ ] **Working days** — `TODO(work-hours)` (`src/components/site/open-status.tsx`)
+      The "open now / closed" badge only reads hours such as "10:00 – 21:00" and ignores the days of the week.
+- [ ] **Delivery** — `TODO(delivery)`
+      Step 3 of the "How to order" block assumes pickup from the store. If the store delivers, change the text.
 
-## Doʻkon egasi bilan aniqlashtirish
+## To clarify with the store owner
 
-- [ ] **Haqiqiy aloqa maʼlumotlari** — hozir saytda ataylab *soxta* maʼlumotlar turibdi (telefon `+998 00 000 00 00`,
-      Telegram `demo_manager_`, Instagram → example.com, demo manzil, xarita — shahar markazi). Ishga tushirishdan oldin
-      Admin → Sozlamalar → Aloqa / Manzil boʻlimida haqiqiylarini kiritish. Oldingi qiymatlar zaxirada:
+- [ ] **Real contact details** — the site deliberately shows *fake* data for now (phone `+998 00 000 00 00`,
+      Telegram `demo_manager_`, Instagram → example.com, a demo address, the map at the city centre). Before launch, enter
+      the real ones in Admin → Settings → Contacts / Address. The previous values are backed up in
       `data/backups/store-before-demo-contacts.db`.
-- [ ] Ish vaqti (hozir: «Har kuni 10:00 – 21:00» — taxminiy).
-- [ ] Dollar kursi (Sozlamalar → «MB kursini olish»).
-- [ ] Demo mahsulotlar oʻrniga haqiqiy mahsulot va fotosuratlar (Sozlamalar → Maʼlumotlar → «Demolarni oʻchirish»).
-- [ ] **Rasmlar** — hozir demo mahsulotlarda ishlab chiqaruvchilarning rasmiy fotosuratlari turibdi (Apple, DJI, Dell, Shure,
-      SanDisk, Fractal, NZXT) — test uchun. Ochiq savdodan oldin oʻz rasmlaringizga almashtiring yoki brendlarning
-      diler shartlarini tekshiring. Chizilgan rasmli eski holat zaxirasi: `data/backups/store-before-photos.db`.
-- [ ] YouTube kanal havolasi (Sozlamalar → Aloqa).
+- [ ] Working hours (now "Har kuni 10:00 – 21:00", an estimate).
+- [ ] Dollar rate (Settings → "MB kursini olish").
+- [ ] Real products and photos instead of the demo ones (Settings → Data → "Demolarni oʻchirish").
+- [ ] **Photos** — the demo products use the manufacturers' official photos (Apple, DJI, Dell, Shure,
+      SanDisk, Fractal, NZXT) for testing. Before opening to the public, replace them with your own photos or check the brands'
+      reseller terms. Backup of the earlier state with drawn images: `data/backups/store-before-photos.db`.
+- [ ] YouTube channel link (Settings → Contacts).
 
-## Joylash
+## Hosting
 
 - [x] Test server: Oracle Cloud Always Free (Frankfurt, Ampere A1, 1 OCPU / 6 GB) — <https://92-5-89-180.sslip.io>.
-      Yangilash: `./deploy/deploy.sh ubuntu@92.5.89.180 ~/.ssh/productstore_oracle`. Admin paroli serverdagi `/etc/productstore.env` faylida.
-- [ ] Domen tanlanganda uni serverga ulash (DNS `A` → 92.5.89.180, keyin deploy.sh ga domen bilan).
-- [ ] Docker image hali real konteynerda sinalmagan.
+      Update: `./deploy/deploy.sh ubuntu@92.5.89.180 ~/.ssh/productstore_oracle`. The admin password is in `/etc/productstore.env` on the server.
+- [ ] Once a domain is chosen, connect it to the server (DNS `A` → 92.5.89.180, then run deploy.sh with the domain).
+- [ ] The Docker image has not been tested in a real container yet.

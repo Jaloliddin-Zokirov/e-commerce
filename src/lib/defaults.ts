@@ -15,7 +15,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   // No-name placeholder store: the name, logo, texts and contacts belong to no real business.
   // Demo contacts until launch: nothing here may reach a real person. The phone has no
   // operator code, the Telegram names are invalid, the links go to example.com and the
-  // map shows the city centre. The owner enters the real data in Admin → Sozlamalar.
+  // map shows the city centre. The owner enters the real data in Admin → Sozlamalar (Settings).
   phones: ["+998 00 000 00 00"],
   email: "",
   telegramUser: "demo_manager_",

@@ -1,85 +1,87 @@
-# Online katalog (no-name demo)
+# Online catalog (no-name demo)
 
-Hech kimga tegishli boʻlmagan namunaviy texnika doʻkoni (nomi «LOGO», maʼlumotlari soxta) uchun ikki tilli (oʻzbekcha / ruscha) online katalog va admin panel.
-Saytda mahsulotlar, narxlar (chegirmada eski narx ustidan chizilgan), rasmlar, xarakteristikalar,
-aloqa raqamlari va xaritadagi manzil koʻrinadi. Onlayn toʻlov yoʻq — mijoz qoʻngʻiroq qiladi,
-Telegramda yozadi yoki «Qayta qoʻngʻiroq» soʻrovini qoldiradi.
+A bilingual (Uzbek / Russian) online catalog and admin panel for a sample electronics store that belongs to no one: it is called "LOGO" and all of its data is fake.
+The site shows products, prices (the old price is struck through on sale items), photos, specifications,
+contact numbers and the store address on a map. There is no online payment: customers call,
+write on Telegram, send an order request or ask for a callback.
 
 ---
 
-## Imkoniyatlar
+## Features
 
-**Sayt (mijozlar uchun)**
-- Bosh sahifa: banner-slayder, kategoriyalar («… dan» narxlari bilan), chegirmalar, yangi kelganlar, xitlar, «Qanday ishlaymiz» bloki, xaritali doʻkon bloki.
-- Katalog: kategoriya va boʻlimlar, filtrlar (brend, narx oraligʻi, sotuvda borlari, chegirmadagilar, holati), saralash, sahifalash.
-- Mahsulot sahifasi: rasm galereyasi (kattalashtirish bilan), variantlar (rang, xotira, konfiguratsiya) — har biri oʻz narxi bilan, eski narx chizilgan + «Tejaysiz» summasi, mavjudlik holati, xarakteristikalar jadvali, tavsif, oʻxshash mahsulotlar.
-- «Qoʻngʻiroq qilish», «Telegramda yozish» (mahsulot nomi va havolasi bilan tayyor xabar), «Qayta qoʻngʻiroq» formasi.
-- Tezkor qidiruv (lotin/kirill, «айфон», «makbuk» kabi yozuvlarni ham tushunadi), sevimlilar, yaqinda koʻrilganlar.
-- Ikki til: `/uz/...` va `/ru/...`, brauzer tiliga qarab avtomatik tanlanadi.
-- Telefon uchun moslashgan dizayn, pastki navigatsiya paneli.
-- SEO: sitemap.xml, robots.txt, Open Graph, Google uchun mahsulot/doʻkon maʼlumotlari (JSON-LD).
+**Storefront**
+- Home page: banner slider, categories (with "from …" prices), sale items, new arrivals, bestsellers, a "How we work" block and a store block with a map.
+- Catalog: categories and subcategories, filters (brand, price range, in stock, on sale, condition), sorting, pagination.
+- Product page: photo gallery with zoom; variants (color, storage, configuration), each with its own price; the old price struck through with the amount saved; availability, a specifications table, description and similar products.
+- "Order" form, "Call", "Write on Telegram" (a ready message with the product name and link) and a callback form.
+- Instant search (understands Latin and Cyrillic spellings such as "айфон" or "makbuk"), favorites, recently viewed.
+- Two languages: `/uz/...` and `/ru/...`, chosen automatically from the browser language.
+- Mobile layout with a bottom navigation bar.
+- SEO: sitemap.xml, robots.txt, Open Graph, product and store data for Google (JSON-LD).
 
 **Admin panel (`/admin`)**
-- Mahsulot qoʻshish/tahrirlash: nom va tavsif ikki tilda, rasmlar (sudrab tashlash, tartiblash, rangga biriktirish), narx, eski (chizilgan) narx, tez chegirma tugmalari (−5%…−30%), variantlar jadvali, xarakteristikalar (tayyor shablonlar va boshqa mahsulotdan nusxalash), «Yangi / Xit / Tavsiya» belgilari, qoralama rejimi, saytda qanday koʻrinishining jonli namunasi.
-- Mahsulotlar roʻyxati: qidiruv, filtrlar, bir nechtasini birdan yashirish/oʻchirish, nusxa yaratish.
-- Kategoriyalar (2 daraja), brendlar, bannerlar.
-- Soʻrovlar: «Buyurtma berish» va «Qayta qoʻngʻiroq» murojaatlari — sahifani yangilamasdan jonli paydo boʻladi; ixtiyoriy ravishda Telegram-botga ham xabar.
-- Sozlamalar: aloqa, manzil va xarita, ish vaqti, valyuta (dollarda kiritib soʻmda koʻrsatish, Markaziy bank kursini bir tugmada olish), muddatli toʻlov yozuvi, eʼlon paneli, SEO, parol.
+- Adding and editing products: name and description in both languages; photos (drag and drop, reordering, linking to a color); price and old (struck-through) price; quick discount buttons (−5%…−30%); a variants table; specifications (ready templates and copying from another product); New / Bestseller / Recommended badges; draft mode; a live preview of how the product looks on the site.
+- Product list: search, filters, hiding or deleting several products at once, duplicating.
+- Categories (2 levels), brands, banners.
+- Requests ("Soʻrovlar"): orders and callback requests appear live, without reloading the page; optionally they also go to a Telegram bot.
+- Settings: contacts, address and map, working hours, currency (prices entered in dollars and shown in soums, with the Central Bank rate fetched in one click), installment note, announcement bar, SEO, password.
 
 ---
 
-## Kompyuterda ishga tushirish
+## Running locally
 
-Talab: **Node.js 22 yoki yangiroq** (tavsiya: 24).
+Requires **Node.js 22 or newer** (24 recommended).
 
 ```bash
 npm install
-cp .env.example .env.local   # keyin .env.local ichida ADMIN_PASSWORD ni oʻzgartiring
+cp .env.example .env.local   # then change ADMIN_PASSWORD in .env.local
 npm run dev
 ```
 
-- Sayt: http://localhost:3000
-- Admin panel: http://localhost:3000/admin (parol — `.env.local` dagi `ADMIN_PASSWORD`)
+- Site: http://localhost:3000
+- Admin panel: http://localhost:3000/admin (password: `ADMIN_PASSWORD` from `.env.local`)
 
-Birinchi ishga tushirishda baza (`data/store.db`) avtomatik yaratiladi va **demo mahsulotlar** qoʻshiladi —
-dizayn boʻsh koʻrinmasligi uchun. Oʻz mahsulotlaringizni qoʻshgach, ularni
-**Admin → Sozlamalar → Maʼlumotlar → «Demolarni oʻchirish»** tugmasi bilan olib tashlang
-(kategoriyalar va brendlar qoladi). Demo umuman kerak boʻlmasa, birinchi ishga tushirishdan oldin `.env` ga `SEED_DEMO=0` yozing.
-
----
-
-## Admin panelda ishlash
-
-1. **Mahsulot qoʻshish:** Mahsulotlar → «Yangi mahsulot». Nomini yozing, rasm yuklang, narxni kiriting.
-   - **Chegirma:** «Eski narx» maydoniga avvalgi narxni yozing — saytda u ustidan chiziladi, yangi narx qizil boʻladi va «−15%» belgisi chiqadi. Yoki «Tez chegirma» tugmalaridan birini bosing.
-   - **Narx 0** boʻlsa, saytda «Narxini soʻrang» yoziladi.
-   - **Variantlar:** «+ Rang», «+ Xotira» kabi tugmalar bilan qiymatlar qoʻshing — jadvalda har bir kombinatsiya uchun alohida narx, eski narx va holat belgilanadi. Rasmlarga rang biriktirsangiz, mijoz rangni tanlaganda shu rasmlar chiqadi.
-   - Saqlash: «Saqlash» tugmasi yoki `⌘/Ctrl + S`.
-2. **Valyuta:** narxlar standart boʻyicha dollarda kiritiladi va saytda soʻmda koʻrsatiladi. Kurs oʻzgarsa, **Sozlamalar → Narx va valyuta → «MB kursini olish»** → «Saqlash» — barcha narxlar avtomatik yangilanadi.
-3. **Bannerlar:** bosh sahifadagi slayder. Sarlavha yozilsa matn chapda, rasm oʻngda chiqadi; tayyor dizayndagi rasm boʻlsa, sarlavhani boʻsh qoldiring.
-4. **Telegram xabarnoma:** Sozlamalar → Telegram bildirishnomalar (yoʻriqnoma oʻsha yerda). Shundan soʻng har bir yangi soʻrov darhol Telegramga keladi.
-
-> Tekshirib chiqing: ish vaqti (hozir «Har kuni 10:00 – 21:00» deb yozilgan), dollar kursi va demo mahsulotlarning narx/xarakteristikalari — bular namuna sifatida kiritilgan.
+On the first start the database (`data/store.db`) is created automatically and filled with **demo products**,
+so the design does not look empty. Once your own products are in, remove the demos with the
+**Admin → Sozlamalar → Maʼlumotlar → "Demolarni oʻchirish"** (Settings → Data → Delete demos) button;
+categories and brands stay. If you do not want demo data at all, add `SEED_DEMO=0` to `.env` before the first start.
 
 ---
 
-## Serverga joylash (VPS)
+## Working in the admin panel
 
-**Eng oson yoʻl — tekin Oracle Cloud serveri:** bosqichma-bosqich yoʻriqnoma [deploy/ORACLE.md](deploy/ORACLE.md) da.
-Serverni tayyorlash va saytni yuklash bitta buyruq bilan bajariladi: `./deploy/deploy.sh ubuntu@SERVER_IP kalit.key`
-(istalgan Ubuntu 24.04 VPS'da ham ishlaydi). Quyida qoʻlda oʻrnatish variantlari.
+The admin panel is in Uzbek; button and section names are quoted below as they appear there.
 
-Sayt oddiy Node.js server sifatida ishlaydi; maʼlumotlar bitta papkada (`data/`: SQLite baza + rasmlar).
-Tashqi xizmat yoki pullik maʼlumotlar bazasi kerak emas.
+1. **Adding a product:** Mahsulotlar → "Yangi mahsulot" (Products → New product). Enter the name, upload photos, set the price.
+   - **Discount:** put the previous price into "Eski narx" (Old price). The site strikes it through, shows the new price in red and adds a "−15%" badge. Or press one of the "Tez chegirma" (Quick discount) buttons.
+   - With **price 0** the site shows "Narxini soʻrang" (Ask for the price).
+   - **Variants:** add values with buttons such as "+ Rang" (Color) and "+ Xotira" (Storage). The table then gets a separate price, old price and status for every combination. Photos linked to a color are shown when the customer picks that color.
+   - Saving: the "Saqlash" (Save) button or `⌘/Ctrl + S`.
+2. **Currency:** by default prices are entered in dollars and shown in soums on the site. When the rate changes, use **Sozlamalar → Narx va valyuta → "MB kursini olish"** (Settings → Price and currency → Get the Central Bank rate), then "Saqlash"; all prices update automatically.
+3. **Banners:** the home page slider. If a banner has a title, the text goes on the left and the image on the right; for a ready-made banner image, leave the title empty.
+4. **Telegram notifications:** Sozlamalar → Telegram bildirishnomalar (Settings → Telegram notifications); the instructions are on that page. After that every new request reaches Telegram right away.
 
-### 1-variant: Docker
+> Check these before launch: working hours (currently "Har kuni 10:00 – 21:00", i.e. daily 10:00–21:00), the dollar rate and the prices and specifications of the demo products. They are all sample values.
+
+---
+
+## Deploying to a server (VPS)
+
+**The easiest way is a free Oracle Cloud server:** see the step-by-step guide in [deploy/ORACLE.md](deploy/ORACLE.md).
+Preparing the server and uploading the site is one command: `./deploy/deploy.sh ubuntu@SERVER_IP key.key`
+(it works on any Ubuntu 24.04 VPS as well). Manual setup options follow.
+
+The site runs as a plain Node.js server; all data is in one folder (`data/`: the SQLite database and photos).
+No external services or paid databases are needed.
+
+### Option 1: Docker
 
 ```bash
 cp .env.example .env.production   # ADMIN_PASSWORD, SESSION_SECRET, SITE_URL=https://example.uz
 docker compose up -d --build
 ```
 
-### 2-variant: Node.js + PM2
+### Option 2: Node.js + PM2
 
 ```bash
 npm ci
@@ -89,12 +91,12 @@ pm2 start npm --name productstore -- start
 pm2 save
 ```
 
-### Nginx (domen va HTTPS)
+### Nginx (domain and HTTPS)
 
 ```nginx
 server {
     server_name example.uz www.example.uz;
-    client_max_body_size 25m;          # rasm yuklash uchun (standart 1 MB yetmaydi)
+    client_max_body_size 25m;          # for photo uploads (the default 1 MB is not enough)
 
     location / {
         proxy_pass http://127.0.0.1:3000;
@@ -108,30 +110,30 @@ server {
 ```
 
 SSL: `sudo certbot --nginx -d example.uz -d www.example.uz`.
-Admin paneldagi «Soʻrovlar» jonli yangilanadi (Server-Sent Events, `/api/admin/leads/stream`); bu uchun nginx'da qoʻshimcha sozlama shart emas — javobda `X-Accel-Buffering: no` bor va server har 25 soniyada aloqani tekshirib turadi.
-Productionda `.env` dagi `SITE_URL=https://example.uz` boʻlishi shart (sitemap va ijtimoiy tarmoq havolalari uchun).
+The requests page in the admin panel updates live (Server-Sent Events, `/api/admin/leads/stream`). Nginx needs no extra settings for this: the response sets `X-Accel-Buffering: no` and the server pings the connection every 25 seconds.
+In production, `.env` must contain `SITE_URL=https://example.uz` (used by the sitemap and social sharing links).
 
-### Zaxira nusxa
+### Backups
 
-Hamma maʼlumot `data/` papkasida (yoki `DATA_DIR` da). Uni muntazam nusxalang, masalan:
+All data is in the `data/` folder (or `DATA_DIR`). Copy it regularly, for example:
 
 ```bash
 tar czf backup-$(date +%F).tar.gz data/
 ```
 
-### Parolni unutsangiz
+### Forgotten password
 
 ```bash
 npm run reset-password
 ```
 
-Shundan soʻng `.env.local` (yoki `.env.production`) dagi `ADMIN_PASSWORD` bilan kirasiz.
+After that, sign in with `ADMIN_PASSWORD` from `.env.local` (or `.env.production`).
 
 ---
 
-## Texnik maʼlumot
+## Technical notes
 
 - Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4
-- SQLite (`better-sqlite3`), rasmlar `sharp` orqali WebP formatga oʻtkaziladi (bir nechta oʻlchamda)
-- Tuzilma: `src/app/(site)/[locale]` — sayt, `src/app/(admin)/admin` — admin panel, `src/lib` — maʼlumotlar qatlami, `src/components` — interfeys
-- Tarjimalar: `src/lib/i18n/uz.ts`, `src/lib/i18n/ru.ts`
+- SQLite (`better-sqlite3`); photos are converted to WebP with `sharp` (in several sizes)
+- Structure: `src/app/(site)/[locale]` — storefront, `src/app/(admin)/admin` — admin panel, `src/lib` — data layer, `src/components` — UI
+- Translations: `src/lib/i18n/uz.ts`, `src/lib/i18n/ru.ts`

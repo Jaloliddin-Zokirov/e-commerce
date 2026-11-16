@@ -35,7 +35,7 @@ function OrderForm({ product, onDone }: { product: OrderProduct; onDone: () => v
     setError(null);
     setStatus("sending");
     try {
-      // TODO(order-delivery): orders are stored in Admin → Soʻrovlar (+ the optional Telegram bot).
+      // TODO(order-delivery): orders are stored in Admin → Soʻrovlar (Requests) and also go to the Telegram bot if one is set up.
       // Decide the final destination (bot DM, channel or group) when wiring the integrations.
       const res = await submitLead({
         kind: "order",

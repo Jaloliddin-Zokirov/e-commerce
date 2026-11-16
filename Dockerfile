@@ -1,4 +1,4 @@
-# Online katalog — production image
+# Online catalog — production image
 FROM node:24-bookworm-slim AS build
 WORKDIR /app
 # Compilers in case a prebuilt better-sqlite3 binary is not available for the server's CPU.

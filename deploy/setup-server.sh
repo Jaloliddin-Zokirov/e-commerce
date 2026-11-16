@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Online katalogni Ubuntu 24.04 serverga o'rnatadi yoki yangilaydi (Oracle Cloud Always Free: ARM yoki AMD).
-# Odatda deploy/deploy.sh uni o'zi ishga tushiradi; qayta ishga tushirish xavfsiz — yangilash ham shu bilan.
+# Installs or updates the online catalog on an Ubuntu 24.04 server (Oracle Cloud Always Free: ARM or AMD).
+# deploy/deploy.sh normally runs it; running it again is safe, and that is also how updates work.
 #
-#   PUBLIC_IP  serverning ochiq IP manzili (deploy.sh beradi)
-#   DOMAIN     HTTPS uchun domen. Bo'sh bo'lsa <ip>.sslip.io ishlatiladi, "none" — faqat HTTP
-#   APP_DIR    kod papkasi (standart /opt/productstore)
-#   DATA_DIR   baza va rasmlar (standart /var/lib/productstore)
+#   PUBLIC_IP  the server's public IP address (passed by deploy.sh)
+#   DOMAIN     domain for HTTPS. Empty means <ip>.sslip.io, "none" means HTTP only
+#   APP_DIR    code folder (default /opt/productstore)
+#   DATA_DIR   database and photos (default /var/lib/productstore)
 set -euo pipefail
 
 APP_DIR="${APP_DIR:-/opt/productstore}"
@@ -21,10 +21,10 @@ log() { printf '\n\033[1;32m▶ %s\033[0m\n' "$*"; }
 warn() { printf '\n\033[1;33m! %s\033[0m\n' "$*"; }
 
 if [ "$(id -u)" -eq 0 ]; then
-  echo "Skriptni oddiy foydalanuvchi (masalan, ubuntu) nomidan ishga tushiring, root emas."
+  echo "Run this script as a regular user (for example ubuntu), not as root."
   exit 1
 fi
-[ -f "$APP_DIR/package.json" ] || { echo "$APP_DIR da loyiha topilmadi — avval deploy/deploy.sh bilan kodni yuklang."; exit 1; }
+[ -f "$APP_DIR/package.json" ] || { echo "No project found in $APP_DIR; upload the code with deploy/deploy.sh first."; exit 1; }
 if [ -z "$PUBLIC_IP" ]; then
   PUBLIC_IP="$(curl -fsS --max-time 5 https://api.ipify.org || true)"
 fi
@@ -35,7 +35,7 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-log "Tizim paketlari"
+log "System packages"
 sudo apt-get update -y
 sudo apt-get install -y --no-install-recommends \
   ca-certificates curl gnupg openssl build-essential python3 nginx rsync sqlite3 cron certbot python3-certbot-nginx
@@ -57,14 +57,14 @@ if [ "$(free -m | awk '/^Mem:/ {print $2}')" -lt 3000 ] && ! swapon --show | gre
   grep -q '^/swapfile ' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab >/dev/null
 fi
 
-log "Papkalar"
+log "Folders"
 sudo mkdir -p "$APP_DIR" "$DATA_DIR/uploads" "$DATA_DIR/backups"
 sudo chown -R "$APP_USER:$APP_USER" "$APP_DIR" "$DATA_DIR"
 
 # Secrets live outside the code folder, so a new upload never overwrites them.
 NEW_PASSWORD=""
 if ! sudo test -f "$ENV_FILE"; then
-  log "Maxfiy sozlamalar ($ENV_FILE)"
+  log "Secrets ($ENV_FILE)"
   NEW_PASSWORD="$(openssl rand -base64 24 | tr -dc 'A-Za-z0-9' | cut -c1-16)"
   sudo tee "$ENV_FILE" >/dev/null <<EOF
 ADMIN_PASSWORD=$NEW_PASSWORD
@@ -76,7 +76,7 @@ EOF
   sudo chmod 640 "$ENV_FILE"
 fi
 
-log "Kutubxonalar va build (bir necha daqiqa)"
+log "Dependencies and build (a few minutes)"
 cd "$APP_DIR"
 # A running server would trip over node_modules and .next being replaced under it.
 if systemctl list-unit-files productstore.service >/dev/null 2>&1; then sudo systemctl stop productstore || true; fi
@@ -88,10 +88,10 @@ set -a
 set +a
 NODE_ENV=production npm run build
 
-log "Xizmat (systemd)"
+log "Service (systemd)"
 sudo tee /etc/systemd/system/productstore.service >/dev/null <<EOF
 [Unit]
-Description=Online katalog
+Description=Online catalog
 After=network.target
 
 [Service]
@@ -144,7 +144,7 @@ sudo nginx -t
 sudo systemctl enable nginx >/dev/null
 sudo systemctl reload nginx || sudo systemctl restart nginx
 
-log "Firewall: 80 va 443 portlar"
+log "Firewall: ports 80 and 443"
 # Oracle's Ubuntu images reject everything except SSH in iptables, on top of the cloud Security List.
 if command -v iptables >/dev/null; then
   for p in 80 443; do
@@ -160,11 +160,11 @@ if [ -n "$DOMAIN" ] && [ "$DOMAIN" != "none" ]; then
   if sudo test -d "/etc/letsencrypt/live/$DOMAIN"; then
     SITE_URL="https://$DOMAIN"
   else
-    log "HTTPS sertifikati: $DOMAIN (Let's Encrypt)"
+    log "HTTPS certificate: $DOMAIN (Let's Encrypt)"
     if sudo certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos --register-unsafely-without-email --redirect; then
       SITE_URL="https://$DOMAIN"
     else
-      warn "HTTPS olinmadi. Oracle Security List'da 80 va 443 portlar ochiqmi? Sayt hozircha HTTP'da ishlaydi."
+      warn "Could not get HTTPS. Are ports 80 and 443 open in the Oracle Security List? The site runs on HTTP for now."
     fi
   fi
 fi
@@ -176,7 +176,7 @@ fi
 sudo sed -i "s#^SITE_URL=.*#SITE_URL=$SITE_URL#" "$ENV_FILE"
 sudo systemctl restart productstore
 
-log "Kunlik zaxira nusxa"
+log "Daily backup"
 sudo tee /etc/cron.daily/productstore-backup >/dev/null <<'EOF'
 #!/bin/sh
 # Daily copy of the store database and photos; the last 7 days are kept.
@@ -193,24 +193,24 @@ EOF
 sudo sed -i "s/__USER__/$APP_USER/" /etc/cron.daily/productstore-backup
 sudo chmod 755 /etc/cron.daily/productstore-backup
 
-log "Tekshiruv"
+log "Health check"
 for _ in $(seq 1 30); do
   if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/uz"; then break; fi
   sleep 2
 done
 if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/uz"; then
-  printf '\n\033[1;32m✔ Sayt ishlayapti\033[0m\n'
+  printf '\n\033[1;32m✔ The site is up\033[0m\n'
 else
-  warn "Sayt javob bermadi. Jurnal: sudo journalctl -u productstore -n 80"
+  warn "The site did not respond. Logs: sudo journalctl -u productstore -n 80"
 fi
 
 echo
-echo "  Sayt:   $SITE_URL/uz"
+echo "  Site:   $SITE_URL/uz"
 echo "  Admin:  $SITE_URL/admin"
 if [ -n "$NEW_PASSWORD" ]; then
-  echo "  Admin paroli: $NEW_PASSWORD"
-  echo "  (Faqat hozir ko'rsatiladi. Serverda $ENV_FILE faylida saqlanadi.)"
+  echo "  Admin password: $NEW_PASSWORD"
+  echo "  (Shown only now. It is stored on the server in $ENV_FILE.)"
 else
-  echo "  Admin paroli: avvalgidek (serverda $ENV_FILE faylida)."
+  echo "  Admin password: unchanged (in $ENV_FILE on the server)."
 fi
 echo

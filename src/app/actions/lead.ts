@@ -57,7 +57,7 @@ export async function submitLead(input: LeadInput): Promise<LeadResult> {
     return { ok: false, error: "generic" };
   }
 
-  // TODO(order-delivery): for now every order/callback lands in Admin → Soʻrovlar, and is also
+  // TODO(order-delivery): for now every order/callback lands in Admin → Soʻrovlar (Requests), and is also
   // forwarded to the Telegram bot when Settings → Telegram is filled in. Decide with the owner
   // whether orders should go to a bot DM, a channel or a group, then finish this integration.
   const lines = [
