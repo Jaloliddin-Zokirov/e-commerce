@@ -27,7 +27,7 @@ export function MobileMenu({
   instagram: string;
   telegramChannel: string;
 }) {
-  const { dict, locale, phones } = useSite();
+  const { dict, locale, phones, storeName } = useSite();
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<number | null>(null);
   const close = useCallback(() => setOpen(false), []);
@@ -44,7 +44,7 @@ export function MobileMenu({
       </button>
       <Overlay open={open} onClose={close} side="left" label={dict.nav.menu}>
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
-          <Link href={href(locale)} onClick={close} aria-label="PRODUCT">
+          <Link href={href(locale)} onClick={close} aria-label={storeName}>
             <Logo className="h-7 w-auto" />
           </Link>
           <button

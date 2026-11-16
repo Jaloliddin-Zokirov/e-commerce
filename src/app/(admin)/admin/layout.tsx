@@ -7,7 +7,7 @@ import { ToastProvider } from "@/components/admin/ui";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: { default: "Admin panel — PRODUCT", template: "%s — Admin PRODUCT" },
+  title: { default: "Admin panel", template: "%s — Admin panel" },
   robots: { index: false, follow: false },
 };
 

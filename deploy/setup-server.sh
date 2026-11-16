@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PRODUCT katalogini Ubuntu 24.04 serverga o'rnatadi yoki yangilaydi (Oracle Cloud Always Free: ARM yoki AMD).
+# Online katalogni Ubuntu 24.04 serverga o'rnatadi yoki yangilaydi (Oracle Cloud Always Free: ARM yoki AMD).
 # Odatda deploy/deploy.sh uni o'zi ishga tushiradi; qayta ishga tushirish xavfsiz — yangilash ham shu bilan.
 #
 #   PUBLIC_IP  serverning ochiq IP manzili (deploy.sh beradi)
@@ -91,7 +91,7 @@ NODE_ENV=production npm run build
 log "Xizmat (systemd)"
 sudo tee /etc/systemd/system/productstore.service >/dev/null <<EOF
 [Unit]
-Description=PRODUCT online katalog
+Description=Online katalog
 After=network.target
 
 [Service]

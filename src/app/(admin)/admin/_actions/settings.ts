@@ -5,7 +5,7 @@ import { checkPassword, requireAdmin, setPassword, startSession } from "@/lib/au
 import { issuesToErrors, settingsInput } from "@/lib/admin/schemas";
 import { getDb } from "@/lib/db";
 import { cleanupOrphans, deleteAssets } from "@/lib/images";
-import { notifyTelegram } from "@/lib/notify";
+import { escapeHtml, notifyTelegram } from "@/lib/notify";
 import { listBanners } from "@/lib/repo/banners";
 import { queryProducts, referencedImageIds, reindexProducts } from "@/lib/repo/products";
 import { getSettings, saveSettings } from "@/lib/repo/settings";
@@ -85,7 +85,7 @@ export async function fetchCbuRateAction(): Promise<{ ok: true; rate: number; da
 export async function testTelegramAction(token: string, chatId: string): Promise<ActionResult> {
   await requireAdmin();
   const settings = { ...getSettings(), telegramBot: { token, chatId } };
-  const ok = await notifyTelegram(settings, "✅ <b>PRODUCT</b>: Telegram xabarnomalari ishlayapti.");
+  const ok = await notifyTelegram(settings, `✅ <b>${escapeHtml(settings.storeName)}</b>: Telegram xabarnomalari ishlayapti.`);
   return ok
     ? { ok: true, message: "Test xabar yuborildi" }
     : { ok: false, message: "Yuborilmadi. Token va chat ID ni tekshiring, botga /start yozganingizga ishonch hosil qiling." };

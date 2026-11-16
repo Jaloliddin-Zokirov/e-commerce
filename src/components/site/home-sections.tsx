@@ -139,7 +139,7 @@ export function DealCard({ deal, dict, locale }: { deal: Deal; dict: Dict; local
   );
 }
 
-/* ---------- Professional approach ---------- */
+/* ---------- How we work ---------- */
 
 export function ProcessSection({ dict }: { dict: Dict }) {
   return (
@@ -151,10 +151,10 @@ export function ProcessSection({ dict }: { dict: Dict }) {
             {dict.home.processTitle}
           </h2>
           <p className="mt-4 max-w-lg text-[17px] leading-relaxed text-muted">{dict.home.processText}</p>
-          <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-8 sm:grid-cols-4">
+          <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-8 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
             {dict.home.stats.map((s) => (
               <div key={s.label}>
-                <dt className="text-[28px] font-semibold leading-none tracking-[-0.02em] tabular sm:text-[32px]">{s.value}</dt>
+                <dt className="whitespace-nowrap text-[28px] font-semibold leading-none tracking-[-0.02em] tabular sm:text-[32px]">{s.value}</dt>
                 <dd className="mt-2 text-[13px] leading-snug text-muted">{s.label}</dd>
               </div>
             ))}
@@ -212,7 +212,7 @@ export function Showcase({ dict, groups }: { dict: Dict; groups: ShowcaseGroup[]
   );
 }
 
-/* ---------- Why PRODUCT ---------- */
+/* ---------- Why us ---------- */
 
 const WHY_ICONS = [ShieldCheck, Store, MessagesSquare, Zap];
 const WHY_TONES = ["text-ok", "text-accent", "text-new", "text-[#6e4ff5]"];

@@ -11,7 +11,7 @@ UI toʻliq tugagach shu roʻyxat boʻyicha bir chetdan oʻtamiz. Koddagi joylar 
       bildirishnoma va son bilan); Sozlamalarda bot ulansa, Telegram-botga ham ketadi. Hal qilish kerak: bot shaxsiy chatga, kanalga yoki guruhga yozsinmi,
       bir nechta menejerga taqsimlansinmi.
 - [ ] **Bosh sahifa statistikasi** — `TODO(stats)` (`src/lib/i18n/uz.ts`, `ru.ts`)
-      «25 yil», «21K+ Instagram», «4K+ Telegram», «100%» qoʻlda yozilgan. Admin panel → Sozlamalarga koʻchirish.
+      «24/7», «15 min», «1 yil+», «100%» — namunaviy raqamlar, qoʻlda yozilgan. Admin panel → Sozlamalarga koʻchirish.
 - [ ] **Ish vaqti kunlari** — `TODO(work-hours)` (`src/components/site/open-status.tsx`)
       «Hozir ochiq / yopiq» belgisi faqat «10:00 – 21:00» kabi soatni oʻqiydi, hafta kunlarini hisobga olmaydi.
 - [ ] **Yetkazib berish** — `TODO(delivery)`
@@ -34,6 +34,6 @@ UI toʻliq tugagach shu roʻyxat boʻyicha bir chetdan oʻtamiz. Koddagi joylar 
 ## Joylash
 
 - [x] Test server: Oracle Cloud Always Free (Frankfurt, Ampere A1, 1 OCPU / 6 GB) — <https://92-5-89-180.sslip.io>.
-      Yangilash: `./deploy/deploy.sh ubuntu@92.5.89.180 ~/.ssh/productstore_oracle`. Admin paroli: `.env.server` (faqat shu kompyuterda).
-- [ ] `productstore.uz` domenini serverga ulash (DNS `A` → 92.5.89.180, keyin deploy.sh ga domen bilan).
+      Yangilash: `./deploy/deploy.sh ubuntu@92.5.89.180 ~/.ssh/productstore_oracle`. Admin paroli serverdagi `/etc/productstore.env` faylida.
+- [ ] Domen tanlanganda uni serverga ulash (DNS `A` → 92.5.89.180, keyin deploy.sh ga domen bilan).
 - [ ] Docker image hali real konteynerda sinalmagan.

@@ -1,6 +1,6 @@
-# PRODUCT — online katalog (productstore.uz)
+# Online katalog (no-name demo)
 
-**PRODUCT** doʻkoni uchun ikki tilli (oʻzbekcha / ruscha) online katalog va admin panel.
+Hech kimga tegishli boʻlmagan namunaviy texnika doʻkoni (nomi «LOGO», maʼlumotlari soxta) uchun ikki tilli (oʻzbekcha / ruscha) online katalog va admin panel.
 Saytda mahsulotlar, narxlar (chegirmada eski narx ustidan chizilgan), rasmlar, xarakteristikalar,
 aloqa raqamlari va xaritadagi manzil koʻrinadi. Onlayn toʻlov yoʻq — mijoz qoʻngʻiroq qiladi,
 Telegramda yozadi yoki «Qayta qoʻngʻiroq» soʻrovini qoldiradi.
@@ -10,7 +10,7 @@ Telegramda yozadi yoki «Qayta qoʻngʻiroq» soʻrovini qoldiradi.
 ## Imkoniyatlar
 
 **Sayt (mijozlar uchun)**
-- Bosh sahifa: banner-slayder, kategoriyalar («… dan» narxlari bilan), chegirmalar, yangi kelganlar, xitlar, «Professional yondashuv» bloki, xaritali doʻkon bloki.
+- Bosh sahifa: banner-slayder, kategoriyalar («… dan» narxlari bilan), chegirmalar, yangi kelganlar, xitlar, «Qanday ishlaymiz» bloki, xaritali doʻkon bloki.
 - Katalog: kategoriya va boʻlimlar, filtrlar (brend, narx oraligʻi, sotuvda borlari, chegirmadagilar, holati), saralash, sahifalash.
 - Mahsulot sahifasi: rasm galereyasi (kattalashtirish bilan), variantlar (rang, xotira, konfiguratsiya) — har biri oʻz narxi bilan, eski narx chizilgan + «Tejaysiz» summasi, mavjudlik holati, xarakteristikalar jadvali, tavsif, oʻxshash mahsulotlar.
 - «Qoʻngʻiroq qilish», «Telegramda yozish» (mahsulot nomi va havolasi bilan tayyor xabar), «Qayta qoʻngʻiroq» formasi.
@@ -75,7 +75,7 @@ Tashqi xizmat yoki pullik maʼlumotlar bazasi kerak emas.
 ### 1-variant: Docker
 
 ```bash
-cp .env.example .env.production   # ADMIN_PASSWORD, SESSION_SECRET, SITE_URL=https://productstore.uz
+cp .env.example .env.production   # ADMIN_PASSWORD, SESSION_SECRET, SITE_URL=https://example.uz
 docker compose up -d --build
 ```
 
@@ -93,7 +93,7 @@ pm2 save
 
 ```nginx
 server {
-    server_name productstore.uz www.productstore.uz;
+    server_name example.uz www.example.uz;
     client_max_body_size 25m;          # rasm yuklash uchun (standart 1 MB yetmaydi)
 
     location / {
@@ -107,9 +107,9 @@ server {
 }
 ```
 
-SSL: `sudo certbot --nginx -d productstore.uz -d www.productstore.uz`.
+SSL: `sudo certbot --nginx -d example.uz -d www.example.uz`.
 Admin paneldagi «Soʻrovlar» jonli yangilanadi (Server-Sent Events, `/api/admin/leads/stream`); bu uchun nginx'da qoʻshimcha sozlama shart emas — javobda `X-Accel-Buffering: no` bor va server har 25 soniyada aloqani tekshirib turadi.
-Productionda `.env` dagi `SITE_URL=https://productstore.uz` boʻlishi shart (sitemap va ijtimoiy tarmoq havolalari uchun).
+Productionda `.env` dagi `SITE_URL=https://example.uz` boʻlishi shart (sitemap va ijtimoiy tarmoq havolalari uchun).
 
 ### Zaxira nusxa
 

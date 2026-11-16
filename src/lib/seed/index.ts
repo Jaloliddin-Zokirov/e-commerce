@@ -46,7 +46,8 @@ type Offer = { price: number; oldPrice?: number | null; stock?: StockStatus };
 type SeedProduct = {
   slug: string;
   cat: string;
-  brand: string;
+  /** Brand slug from BRANDS; omitted for the store's own PC builds. */
+  brand?: string;
   sku?: string;
   name: Localized;
   tagline: Localized;
@@ -702,15 +703,14 @@ const PRODUCTS: SeedProduct[] = [
     ageDays: 70,
   },
   {
-    slug: "product-creator-pc",
+    slug: "creator-pc",
     cat: "builds",
-    brand: "product",
-    sku: "PD-CREATOR",
-    name: L("PRODUCT Creator — Ryzen 9 9950X3D / RTX 5080"),
+    sku: "PC-CREATOR",
+    name: L("Creator PC — Ryzen 9 9950X3D / RTX 5080"),
     tagline: L("Montaj, 3D va AI uchun ish stansiyasi.", "Рабочая станция для монтажа, 3D и AI."),
     description: L(
-      "Montaj, 3D, rendering va sunʼiy intellekt bilan ishlash uchun ish stansiyasi. Qaysi dasturlardan foydalanishingizni ayting — konfiguratsiyani moslab, yigʻib, sozlab beramiz.\n\n- Windows va kerakli dasturlar oʻrnatilgan holda topshiriladi\n- Har bir yigʻma stress-testdan oʻtkaziladi\n- 2 yil kafolat",
-      "Рабочая станция для монтажа, 3D, рендеринга и работы с AI. Расскажите, какими программами пользуетесь, — подберём конфигурацию, соберём и настроим.\n\n- Выдаём с установленной Windows и нужными программами\n- Каждая сборка проходит стресс-тест\n- Гарантия 2 года",
+      "Montaj, 3D, rendering va sunʼiy intellekt bilan ishlash uchun ish stansiyasi.\n\n- Windows 11 Pro oʻrnatilgan holda topshiriladi\n- Har bir yigʻma stress-testdan oʻtkaziladi\n- 2 yil kafolat",
+      "Рабочая станция для монтажа, 3D, рендеринга и работы с AI.\n\n- Выдаём с установленной Windows 11 Pro\n- Каждая сборка проходит стресс-тест\n- Гарантия 2 года",
     ),
     warranty: L("2 yil kafolat", "Гарантия 2 года"),
     offer: { price: 4290, stock: "preorder" },
@@ -730,15 +730,14 @@ const PRODUCTS: SeedProduct[] = [
     ageDays: 15,
   },
   {
-    slug: "product-gaming-pc",
+    slug: "gaming-pc",
     cat: "builds",
-    brand: "product",
-    sku: "PD-GAMING",
-    name: L("PRODUCT Gaming — Ryzen 7 9800X3D / RTX 5070 Ti"),
+    sku: "PC-GAMING",
+    name: L("Gaming PC — Ryzen 7 9800X3D / RTX 5070 Ti"),
     tagline: L("1440p va 4K oʻyinlar uchun.", "Для игр в 1440p и 4K."),
     description: L(
-      "Oʻyinlar va striming uchun muvozanatli yigʻma: eng tezkor gaming protsessorlaridan biri va RTX 5070 Ti. Game klublar uchun ham yigʻib beramiz.",
-      "Сбалансированная сборка для игр и стриминга: один из самых быстрых игровых процессоров и RTX 5070 Ti. Собираем и для компьютерных клубов.",
+      "Oʻyinlar va striming uchun muvozanatli yigʻma: eng tezkor gaming protsessorlaridan biri va RTX 5070 Ti.",
+      "Сбалансированная сборка для игр и стриминга: один из самых быстрых игровых процессоров и RTX 5070 Ti.",
     ),
     warranty: L("2 yil kafolat", "Гарантия 2 года"),
     offer: { price: 2490, oldPrice: 2690 },
@@ -952,7 +951,6 @@ const CATEGORIES: Array<{
 
 const BRANDS: Array<[string, string]> = [
   ["apple", "Apple"],
-  ["product", "PRODUCT"],
   ["dell", "Dell"],
   ["dji", "DJI"],
   ["shure", "Shure"],
@@ -1125,7 +1123,7 @@ export function seedDatabase(db: Database.Database, uploadDir: string): void {
       ).run({
         slug: p.slug,
         category_id: catIds.get(p.cat) ?? null,
-        brand_id: brandIds.get(p.brand) ?? null,
+        brand_id: (p.brand && brandIds.get(p.brand)) || null,
         sku: p.sku ?? "",
         name_uz: p.name.uz,
         name_ru: p.name.ru,
@@ -1160,7 +1158,7 @@ export function seedDatabase(db: Database.Database, uploadDir: string): void {
     const banners = [
       {
         title: L("iPhone 17 Pro"),
-        subtitle: L("Uchta 48 MP kamera. A19 Pro chipi. Endi PRODUCT’da.", "Три камеры 48 МП. Чип A19 Pro. Уже в PRODUCT."),
+        subtitle: L("Uchta 48 MP kamera. A19 Pro chipi. Endi sotuvda.", "Три камеры 48 МП. Чип A19 Pro. Уже в продаже."),
         button: L("Batafsil", "Подробнее"),
         link: "/product/iphone-17-pro",
         scene: art.bannerScene("iphone"),
@@ -1171,8 +1169,8 @@ export function seedDatabase(db: Database.Database, uploadDir: string): void {
       {
         title: L("AI bilan ishlash uchun setup", "Сетап для работы с AI"),
         subtitle: L(
-          "Mac mini M5 Pro, Studio Display, Magic Keyboard va Trackpad — birga tanlaymiz va sozlab beramiz.",
-          "Mac mini M5 Pro, Studio Display, Magic Keyboard и Trackpad — подберём и настроим под вас.",
+          "Mac mini M5 Pro, Studio Display, Magic Keyboard va Trackpad — toʻliq ish joyi bir buyurtmada.",
+          "Mac mini M5 Pro, Studio Display, Magic Keyboard и Trackpad — готовое рабочее место одним заказом.",
         ),
         button: L("Setupni koʻrish", "Смотреть сетап"),
         link: "/catalog/mac",

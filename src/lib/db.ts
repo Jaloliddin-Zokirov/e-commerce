@@ -2,6 +2,7 @@ import "server-only";
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
+import { removeOldBrand } from "./rebrand";
 import { seedDatabase } from "./seed";
 
 export const DATA_DIR = process.env.DATA_DIR
@@ -11,8 +12,8 @@ export const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 
 export type DB = Database.Database;
 
-/** Each entry upgrades the schema by one version (PRAGMA user_version). */
-const MIGRATIONS: string[] = [
+/** Each entry upgrades the schema by one version (PRAGMA user_version): SQL, or a function for data fixes. */
+const MIGRATIONS: Array<string | ((db: DB) => void)> = [
   `
   CREATE TABLE kv (
     key TEXT PRIMARY KEY,
@@ -135,13 +136,17 @@ const MIGRATIONS: string[] = [
   UPDATE banners SET accent = '#8b5cff' WHERE link = '/catalog/mac' AND accent = '';
   UPDATE banners SET accent = '#3d8bff' WHERE link = '/product/imac-24-m4-refurbished' AND accent = '';
   `,
+  // v4: no-name placeholder store; the earlier brand is removed from existing data.
+  removeOldBrand,
 ];
 
 function migrate(db: DB) {
   const version = db.pragma("user_version", { simple: true }) as number;
   for (let v = version; v < MIGRATIONS.length; v++) {
     db.transaction(() => {
-      db.exec(MIGRATIONS[v]);
+      const step = MIGRATIONS[v];
+      if (typeof step === "string") db.exec(step);
+      else step(db);
       db.pragma(`user_version = ${v + 1}`);
     })();
   }

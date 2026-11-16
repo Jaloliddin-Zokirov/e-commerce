@@ -48,7 +48,7 @@ SSH kalitni kompyuterda yarating (bir marta): `ssh-keygen -t ed25519 -N "" -f ~/
 Mac'da Terminal'ni oching va (IP va kalit faylini oʻzingiznikiga almashtirib) ishga tushiring:
 
 ```bash
-cd ~/Desktop/product.uz
+cd ~/Desktop/Product
 ./deploy/deploy.sh ubuntu@SERVER_IP ~/.ssh/productstore_oracle
 ```
 
@@ -75,10 +75,10 @@ Birinchi marta 5–10 daqiqa ketadi. Oxirida shunday yozuv chiqadi:
 ./deploy/deploy.sh ubuntu@SERVER_IP ~/.ssh/productstore_oracle
 ```
 
-**Oʻz domeningiz boʻlsa** (masalan `productstore.uz`): domen DNS'ida `A` yozuvini server IP'siga qarating, keyin:
+**Oʻz domeningiz boʻlsa** (masalan `example.uz`): domen DNS'ida `A` yozuvini server IP'siga qarating, keyin:
 
 ```bash
-./deploy/deploy.sh ubuntu@SERVER_IP ~/.ssh/productstore_oracle productstore.uz
+./deploy/deploy.sh ubuntu@SERVER_IP ~/.ssh/productstore_oracle example.uz
 ```
 
 **Jurnal (xatolarni koʻrish):**

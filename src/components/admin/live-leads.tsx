@@ -36,7 +36,7 @@ export function LiveLeadsProvider({ initialNew, children }: { initialNew: number
     return () => source.close();
   }, [router, toast]);
 
-  // "(2) Soʻrovlar — Admin PRODUCT" in the browser tab while leads are waiting. Navigations and
+  // "(2) Soʻrovlar — Admin panel" in the browser tab while leads are waiting. Navigations and
   // refreshes write the page's own title back, so the prefix is re-applied whenever <head> changes.
   useEffect(() => {
     const apply = () => {
